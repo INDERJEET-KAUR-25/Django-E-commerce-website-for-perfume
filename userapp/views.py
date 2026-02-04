@@ -4,6 +4,8 @@ from userapp.models import Order, Order, user
 from django.core.mail import send_mail
 from shop import settings
 import random
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 def generate_otp():
     otp = ""
@@ -47,16 +49,14 @@ def add_user(request):
 
 def user_login(request):
     if request.method == 'POST':
-        email = request.POST['email']
-        password = request.POST['password']
+        email = request.POST.get('email') # Use .get() to avoid KeyErrors
+        password = request.POST.get('password')
 
-        from userapp.models import user
-        try:
-            existing_user = user.objects.get(email=email, password=password)
-            request.session['user_id'] = existing_user.id
-            return render(request, 'profile.html', {'username': existing_user.username})
-        
-        except user.DoesNotExist:
+        user = authenticate(request, username=email, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('profile') # Standard practice: Redirect after POST
+        else:
             return render(request, 'login.html', {'error': 'Invalid email or password.'})
     return render(request, 'login.html')
 
@@ -168,3 +168,11 @@ def user_profile(request):
     # Fetch the specific user instance
     current_user = user.objects.get(id=user_id)
     return render(request, 'profile.html', {'curr_user': current_user})
+
+def profile_page(request):
+    # Django automatically attaches the logged-in user to 'request.user'
+    return render(request, 'userapp/profile.html')
+
+@login_required
+def profile_view(request):
+    return render(request, 'profile.html')
