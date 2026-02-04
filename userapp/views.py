@@ -49,16 +49,19 @@ def add_user(request):
 
 def user_login(request):
     if request.method == 'POST':
-        email = request.POST.get('email') # Use .get() to avoid KeyErrors
-        password = request.POST.get('password')
-
-        user = authenticate(request, username=email, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('profile') # Standard practice: Redirect after POST
-        else:
+        email = request.POST['email']
+        password = request.POST['password']
+        
+        from userapp.models import user
+        try:
+            existing_user = user.objects.get(email=email, password=password)
+            request.session['user_id'] = existing_user.id
+            return render(request, 'home.html', {'username': existing_user.username})
+        
+        except user.DoesNotExist:
             return render(request, 'login.html', {'error': 'Invalid email or password.'})
-    return render(request, 'login.html')
+        return render(request, 'login.html')
+
 
 def otp_login(request):
     return render(request, 'otp_login.html')
@@ -99,7 +102,7 @@ def verify_otp(request):
                 request.session['user_id'] = existing_user.id
                 existing_user.OTP = ''
                 existing_user.save()
-                return render(request, 'profile.html', {'username': existing_user.username})
+                return render(request, 'home.html', {'username': existing_user.username})
             else:
                 return render(request, 'verify_otp.html', {'email': email, 'error': 'Invalid OTP. Please try again.'})
         
@@ -169,10 +172,3 @@ def user_profile(request):
     current_user = user.objects.get(id=user_id)
     return render(request, 'profile.html', {'curr_user': current_user})
 
-def profile_page(request):
-    # Django automatically attaches the logged-in user to 'request.user'
-    return render(request, 'userapp/profile.html')
-
-@login_required
-def profile_view(request):
-    return render(request, 'profile.html')
