@@ -54,7 +54,7 @@ def user_login(request):
         try:
             existing_user = user.objects.get(email=email, password=password)
             request.session['user_id'] = existing_user.id
-            return render(request, 'dashboard.html', {'username': existing_user.username})
+            return render(request, 'profile.html', {'username': existing_user.username})
         
         except user.DoesNotExist:
             return render(request, 'login.html', {'error': 'Invalid email or password.'})
