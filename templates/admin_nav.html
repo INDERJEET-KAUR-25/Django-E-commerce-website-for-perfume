@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Navigation</title>
+    <style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    /* Side Navigation Bar */
+    .side-nav-bar {
+        height: 100vh;
+        width: 220px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #333;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    }
+    .side-nav-bar .brand-name {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff;
+        text-decoration: none;
+        margin-bottom: 30px;
+    }
+    .side-nav-bar .nav-links {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 15px;
+    }
+    .side-nav-bar .nav-links a {
+        text-decoration: none;
+        color: #ddd;
+        font-weight: 500;
+        padding: 10px 15px;
+        border-radius: 5px;
+        width: 100%;
+        box-sizing: border-box;
+        transition: background 0.3s ease, color 0.3s ease;
+    }
+    .side-nav-bar .nav-links a:hover {
+        background-color: #ff4757;
+        color: #fff;
+    }
+    .side-nav-bar a:last-child {
+        margin-top: auto; /* Pushes logout link to the bottom */
+        color: #ff6b81;
+    }
+    .side-nav-bar a:last-child:hover {
+        background-color: #ff4757;
+        color: #fff;
+    }
+    </style>
+    </head>
+    <body>
+        <nav class="side-nav-bar">
+            <a href="{% url 'admin_dash' %}" class="brand-name">Admin Dashboard</a>
+            <div class="nav-links">
+                <a href="{% url 'all_users' %}">All Users</a>
+                <a href="{% url 'add_product' %}">Add product</a>
+                <a href="{% url 'view_orders' %}">View Orders</a>
+                <a href="{% url 'sale_report' %}">Analytics</a>
+                <a href="{% url 'admin_login' %}">Logout</a>
+            </div>
+        </nav>
+        {% block content %}
+        {% endblock %}
+
+    </body>
+</html>

@@ -1,0 +1,21 @@
+{% extends 'nav.html' %}
+{% block content %}
+<div style="padding: 50px; max-width: 600px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+    <h2 style="text-align: center;">Secure Checkout</h2>
+    <div style="display: flex; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+        <img src="{{ product.image.url }}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; margin-right: 15px;">
+        <div>
+            <h3 style="margin: 0;">{{ product.name }}</h3>
+            <p style="color: #ff4757; font-weight: bold;">₹{{ product.price }}</p>
+        </div>
+    </div>
+    <form method="POST">
+        {% csrf_token %}
+        <label style="font-weight: 500;">Shipping Address</label>
+        <textarea name="address" placeholder="Enter your full address" required style="width: 100%; height: 100px; padding: 10px; margin-top: 8px; border: 1px solid #ddd; border-radius: 6px;"></textarea>
+        <button type="submit" style="width: 100%; padding: 15px; background: #333; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 20px;">
+            Place Your Order
+        </button>
+    </form>
+</div>
+{% endblock %}

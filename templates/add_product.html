@@ -1,0 +1,99 @@
+{% extends 'admin_nav.html' %}
+
+{% block content %}
+<style>
+  .form-container {
+    margin-left: 240px; /* Moves content past your 220px sidebar */
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+  }
+  .product-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 600px;
+  }
+  .product-card h2 { margin-bottom: 25px; color: #333; text-align: center; }
+  .form-group { margin-bottom: 15px; }
+  .form-group label { display: block; margin-bottom: 5px; font-weight: 500; }
+  .form-group input, .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box;
+  }
+  .add-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .add-btn:hover { background-color: #ff4757; }
+</style>
+
+<div class="form-container">
+  <div class="product-card">
+    <h2>Add New Perfume</h2>
+    <form method="POST" action="{% url 'add_product' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      
+      <div class="form-group">
+        <label>Product Name</label>
+        <input type="text" name="name" placeholder="e.g. Midnight Rose" required>
+      </div>
+
+      <div class="form-group">
+        <label>Price (₹)</label>
+        <input type="number" name="price" placeholder="999" required>
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <textarea name="description" rows="4" placeholder="Describe the fragrance..." required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Product Image</label>
+        <input type="file" name="image" required>
+      </div>
+
+      <button type="submit" class="add-btn">Upload Product</button>
+
+      <hr style="margin: 40px 0;">
+<h2 style="text-align: center;">Existing Products</h2>
+<table style="width: 100%; border-collapse: collapse; margin-top: 20px; background: white;">
+  <thead>
+    <tr style="background: #333; color: white;">
+      <th style="padding: 10px;">Image</th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in products %}
+    <tr style="border-bottom: 1px solid #ddd; text-align: center;">
+      <td><img src="{{ product.image.url }}" width="50" height="50" style="object-fit: cover; border-radius: 4px;"></td>
+      <td>{{ product.name }}</td>
+      <td>₹{{ product.price }}</td>
+      <td>
+        <a href="{% url 'update_product' product.id %}" style="color: #3498db; text-decoration: none; margin-right: 10px;">Edit</a>
+        <a href="{% url 'delete_product' product.id %}" style="color: #ff4757; text-decoration: none;" onclick="return confirm('Are you sure?')">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "nav.html" %}
+{% block content %}
+<div style="max-width: 600px; margin: 50px auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center;">
+    <h2 style="margin-bottom: 20px;">My Profile</h2>
+    
+    {% if curr_user.profile %}
+        <img src="{{ curr_user.profile.url }}" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid #333; margin-bottom: 20px;">
+    {% else %}
+        <div style="width: 150px; height: 150px; border-radius: 50%; background: #eee; line-height: 150px; margin: 0 auto 20px; color: #999;">No Image</div>
+    {% endif %}
+
+    <div style="text-align: left; margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">
+        <p><strong>Username:</strong> {{ curr_user.username }}</p>
+        <p><strong>Email:</strong> {{ curr_user.email }}</p>
+    </div>
+
+    <div style="margin-top: 30px; display: flex; gap: 10px; justify-content: center;">
+        <a href="{% url 'my_orders' %}" style="padding: 10px 20px; background: #333; color: white; text-decoration: none; border-radius: 5px;">My Orders</a>
+        <a href="{% url 'logout' %}" style="padding: 10px 20px; background: #ff4757; color: white; text-decoration: none; border-radius: 5px;">Logout</a>
+    </div>
+</div>
+{% endblock %}
