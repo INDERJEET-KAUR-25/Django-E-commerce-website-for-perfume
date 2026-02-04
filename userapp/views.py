@@ -99,7 +99,7 @@ def verify_otp(request):
                 request.session['user_id'] = existing_user.id
                 existing_user.OTP = ''
                 existing_user.save()
-                return render(request, 'dashboard.html', {'username': existing_user.username})
+                return render(request, 'profile.html', {'username': existing_user.username})
             else:
                 return render(request, 'verify_otp.html', {'email': email, 'error': 'Invalid OTP. Please try again.'})
         
@@ -125,7 +125,7 @@ def place_order(request, product_id):
             address=address,
             status="Pending"
         )
-        return render(request, 'dashboard.html', {'message': 'Order placed successfully!'})
+        return render(request, 'profile.html', {'message': 'Order placed successfully!'})
         
     return render(request, 'place_order.html', {'product': product_obj})
 def my_orders(request):
