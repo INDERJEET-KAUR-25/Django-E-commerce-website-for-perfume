@@ -1,6 +1,17 @@
 {% extends 'nav.html' %}
 {% load static %}
 {% block content %}
+<script>
+            function myFunction() {
+                var name = document.getElementById("username").value;
+                var email = document.getElementById("email").value;
+                var password = document.getElementById("password").value;
+                                
+                if (name === "" || email === "" || password === "") {
+                    alert("Please fill in all fields.");
+                }
+            }
+        </script>
 <style>
   .reg-container {
     display: flex;
@@ -107,7 +118,7 @@
         <label for="profile">Profile Picture</label>
         <input type="file" id="profile" name="profile" required>
 
-      <button type="submit" class="reg-btn">Register</button>
+      <button type="submit" onclick="myFunction()" class="reg-btn">Register</button>
     </form>
   </div>
 </div>

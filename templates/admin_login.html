@@ -1,7 +1,93 @@
-{% extends 'nav.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login</title>
+  <script>
+            function myFunction() {
+                var name = document.getElementById("username").value;
+                var email = document.getElementById("email").value;
+                var password = document.getElementById("password").value;
+                                
+                if (name === "" || email === "" || password === "") {
+                    alert("Please fill in all fields.");
+                }
+            }
+        </script>
+  <style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
 
-{% block content %}
-<style>
+  /* Modern Navigation Bar */
+  .nav-bar {
+    background-color: rgba(255, 255, 255, 0.95); /* White with slight transparency */
+    padding: 15px 50px;
+    display: flex;
+    justify-content: space-between; /* Pushes brand to left, links to right */
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky; /* Keeps nav at top while scrolling */
+    top: 0;
+    z-index: 1000;
+  }
+
+  /* Shop Name / Brand */
+  .brand-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none;
+    letter-spacing: 1px;
+  }
+  .brand-name a:hover{
+    font-size: 5 rem;
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration: overline;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 25px; /* Spacing between links */
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color:black;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+  .nav-links a:hover{
+    color:white;
+    background-color: black;
+    padding: 5px 15px;
+    border-radius: 5px;
+  }
+
+
+  /* Hero Section Adjustment */
+  .hero {
+    height: 95vh;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1500&q=80') 
+                no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+  }
+  .login-btn{
+    background: grey; 
+    color: #fff; 
+    padding: 5px 15px;
+    border-radius: 5px;
+  }
+  
+
+
   /* Container to center the form on the page */
   .login-container {
     display: flex;
@@ -90,7 +176,18 @@
     font-weight: bold;
   }
 </style>
-
+<body>
+  <nav class="nav-bar">
+  <a href="{% url 'home' %}" class="brand-name">LUXE SHOP</a>
+  
+  <div class="nav-links">
+    <a href="{% url 'home' %}">Home</a>
+    <a href="{% url 'see_products' %}">Collection</a>
+    <a href="{% url 'register' %}">Register</a>
+    <a href="{% url 'login' %}" class="login-btn">Login</a>
+    
+</div>
+</nav>
 <div class="login-container">
   <div class="login-card">
     <h2>Admin Login</h2>
@@ -110,8 +207,13 @@
         <input type="password" id="password" name="password" placeholder="Enter your password" required>
       </div>
 
-      <button type="submit" class="login-btn">Login</button>
+      <button type="submit" class="login-btn" onclick="myFunction()">Login</button>
     </form>
   </div>
 </div>
-{% endblock %}
+<footer>
+    <p>&copy; 2026 LUXE SHOP. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

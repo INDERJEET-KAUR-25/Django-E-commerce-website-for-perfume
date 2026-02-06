@@ -1,6 +1,17 @@
 {% extends 'admin_nav.html' %}
 
 {% block content %}
+<script>
+            function myFunction() {
+                var name = document.getElementById("name").value;
+                var price = document.getElementById("price").value;
+                var description = document.getElementById("description").value;
+                                
+                if (name === "" || price === "" || description === "") {
+                    alert("Please fill in all fields.");
+                }
+            }
+        </script>
 <div style="margin-left: 240px; padding: 40px; display: flex; justify-content: center;">
   <div style="background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); width: 100%; max-width: 500px;">
     <h2 style="text-align: center;">Update Product</h2>
@@ -9,16 +20,16 @@
       
       <div style="margin-bottom: 15px;">
         <label style="display: block; margin-bottom: 5px;">Product Name</label>
-        <input type="text" name="name" value="{{ product.name }}" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+        <input type="text" id="name" name="name" value="{{ product.name }}" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
       </div>
 
       <div style="margin-bottom: 15px;">
         <label style="display: block; margin-bottom: 5px;">Price (₹)</label>
-        <input type="number" name="price" value="{{ product.price }}" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+        <input type="number" id="price" name="price" value="{{ product.price }}" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
       </div>
       <div style="margin-bottom: 15px;">
   <label style="display: block; margin-bottom: 5px;">Description</label>
-  <textarea name="description" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;" rows="4">{{ product.description }}</textarea>
+  <textarea name="description" id="description" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;" rows="4">{{ product.description }}</textarea>
 </div>
 
       <div style="margin-bottom: 15px;">
@@ -28,7 +39,7 @@
         <small style="color: #666; display: block;">Leave blank to keep the current image.</small>
       </div>
 
-      <button type="submit" style="width: 100%; padding: 12px; background-color: #2ecc71; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">Save Changes</button>
+      <button type="submit" onclick="myFunction()" style="width: 100%; padding: 12px; background-color: #2ecc71; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">Save Changes</button>
       <a href="{% url 'add_product' %}" style="display: block; text-align: center; margin-top: 15px; color: #666; text-decoration: none;">Cancel</a>
     </form>
   </div>
