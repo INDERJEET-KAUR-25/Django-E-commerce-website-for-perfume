@@ -4,16 +4,25 @@ from userapp.models import Order, Order, user
 from django.core.mail import send_mail
 from shop import settings
 import random
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+import pyttsx3 as pt
 
+#otp generator function
 def generate_otp():
     otp = ""
     for _ in range(6):
         otp += str(random.randint(0,9))
     return otp
 
-# Create your views here.
+#speaking function
+def speak(text):
+    engine = pt.init()
+    engine.setProperty('rate', 150)  # Adjust the speech rate
+    engine.setProperty('volume', 0.8)  # Adjust the volume 
+    engine.setProperty('voice', 'english')  # Set the voice to English
+    engine.say(text)
+    engine.runAndWait()
+
+
 def register(request):
     return render(request, 'register.html')
 
@@ -35,7 +44,7 @@ def add_user(request):
         
         send_mail(
             'Welcome to Shop',
-            f'Hi {username}, welcome to our shop! Thank you for registering.\n We are excited to have you with us. Happy shopping!\n Regards,\n LUXE Shop Team',
+            speak(f'Hi {username}, welcome to our shop! Thank you for registering.\n We are excited to have you with us. Happy shopping!\n Regards,\n LUXE Shop Team'),
             from_email=settings.EMAIL_HOST_USER,
             recipient_list=[email],
             fail_silently=False,
@@ -56,6 +65,7 @@ def user_login(request):
         try:
             existing_user = user.objects.get(email=email, password=password)
             request.session['user_id'] = existing_user.id
+            speak(f'Login successful. Welcome back, {existing_user.username}!')
             return render(request, 'home.html', {'username': existing_user.username})
         
         except user.DoesNotExist:
@@ -75,6 +85,8 @@ def send_otp(request):
             otp = generate_otp()
             existing_user.OTP = otp
             existing_user.save()
+
+            speak(f'OTP sent successfully.')
 
             send_mail(
                 'Your OTP for Login',
@@ -102,6 +114,7 @@ def verify_otp(request):
                 request.session['user_id'] = existing_user.id
                 existing_user.OTP = ''
                 existing_user.save()
+                speak(f'OTP verified successfully.')
                 return render(request, 'home.html', {'username': existing_user.username})
             else:
                 return render(request, 'verify_otp.html', {'email': email, 'error': 'Invalid OTP. Please try again.'})
@@ -128,9 +141,11 @@ def place_order(request, product_id):
             address=address,
             status="Pending"
         )
-        return render(request, 'profile.html', {'message': 'Order placed successfully!'})
+        speak(f'Order placed successfully for product {product_obj.name}.')
+        return render(request, 'home.html', {'message': 'Order placed successfully!'})
         
     return render(request, 'place_order.html', {'product': product_obj})
+
 def my_orders(request):
     user_id = request.session.get('user_id')
     if not user_id:
